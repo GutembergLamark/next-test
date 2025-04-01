@@ -2,5 +2,6 @@
 CREATE TABLE "Task" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "title" TEXT NOT NULL,
-    "content" TEXT
+    "description" TEXT,
+    "status" TEXT NOT NULL DEFAULT 'PENDING'
 );

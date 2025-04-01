@@ -10,11 +10,18 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = "file:dev.db"
+  url      = env("DATABASE_URL")
 }
 
-model Task{
-  id Int @id @default(autoincrement())
-  title String
-  content String?
+model Task {
+  id          Int     @id @default(autoincrement())
+  title       String
+  description String?
+  status      Status  @default(PENDING)
+}
+
+enum Status {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
 }

@@ -2,8 +2,9 @@
 
 if [ "$DEVELOPMENT_MODE" = "true" ]; then
     echo "-- Running Next in development mode"
-    npm run dev
+    npm run dev:entrypoint
 else
     echo "-- Running Next in production mode"
+    npm run build
     npm run start
 fi
