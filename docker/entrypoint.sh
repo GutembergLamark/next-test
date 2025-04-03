@@ -6,5 +6,5 @@ if [ "$DEVELOPMENT_MODE" = "true" ]; then
 else
     echo "-- Running Next in production mode"
     npm run build
-    npm run start
+    npm run start:entrypoint
 fi

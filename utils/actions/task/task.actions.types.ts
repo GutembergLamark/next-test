@@ -1,4 +1,4 @@
-import { $Enums } from "@prisma/client";
+import { $Enums, Task } from "@prisma/client";
 
 export interface TaskActions {
   createTask: (formData: FormData) => Promise<ResponsePrismaTask | null>;
@@ -7,12 +7,15 @@ export interface TaskActions {
     id: number
   ) => Promise<ResponsePrismaTask | null>;
   deleteTask: (id: number) => Promise<ResponsePrismaTask | null>;
+  getAllTasks: () => Promise<Array<Task> | null>;
 }
 
 export interface BodyTaskCreate {
   title: string;
   description: string;
   status: $Enums.Status | undefined;
+  priority: $Enums.Priority | undefined;
+  label: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
@@ -23,4 +26,13 @@ export interface ResponsePrismaTask {
   id: number;
   status: $Enums.Status;
   description: string | null;
+  priority: $Enums.Priority;
+}
+
+export interface ResponsePrismaTaskWithLabel extends ResponsePrismaTask {
+  label: {
+    id: number;
+    title: string;
+    value: string;
+  };
 }

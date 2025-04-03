@@ -14,14 +14,30 @@ datasource db {
 }
 
 model Task {
-  id          Int     @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   title       String
   description String?
-  status      Status  @default(PENDING)
+  status      Status    @default(PENDING)
+  priority    Priority?
+  label       Label     @relation(fields: [labelId], references: [id])
+  labelId     Int
+}
+
+model Label {
+  id    Int    @id @default(autoincrement())
+  title String @unique
+  value String
+  tasks Task[]
 }
 
 enum Status {
   PENDING
   IN_PROGRESS
   COMPLETED
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
 }
