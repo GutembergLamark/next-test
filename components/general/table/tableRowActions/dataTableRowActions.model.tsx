@@ -15,12 +15,10 @@ export default function useDataTableRowActionsModel<TData>({
   const setOrRemoveQueryIdParam = useCallback((type: string) => {
     if (type === "remove") {
       changeModal(false, "create");
-      changeModal(false, "update");
       return router.replace(path);
     }
 
     const params = new URLSearchParams(searchParams.toString());
-    changeModal(false, "update");
     params.set("id", (row?.original as Task).id.toString());
     router.replace(`?${params.toString()}`);
   }, []);
