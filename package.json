@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "DEVELOPMENT_MODE=true npm run services:up",
     "dev:entrypoint": "next dev --turbopack -p 3030",
-    "build": "next build",
+    "build": "npm run build && npx prisma generate",
+    "postbuild": "npx prisma migrate deploy",
     "start": "DEVELOPMENT_MODE=false npm run services:up",
     "start:entrypoint": "next start -p 3030",
     "services:up": "docker compose up",
@@ -24,6 +25,7 @@
   },
   "dependencies": {
     "@prisma/client": "^6.5.0",
+    "@prisma/extension-accelerate": "^1.3.0",
     "@radix-ui/react-avatar": "^1.1.3",
     "@radix-ui/react-checkbox": "^1.1.4",
     "@radix-ui/react-dialog": "^1.1.6",
@@ -40,6 +42,7 @@
     "next": "15.2.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "recharts": "^2.15.2",
     "tailwind-merge": "^3.1.0",
     "ts-node": "^10.9.2",
     "tw-animate-css": "^1.2.5",
@@ -57,6 +60,7 @@
     "eslint-config-next": "15.2.4",
     "prisma": "^6.5.0",
     "tailwindcss": "^4",
+    "tsx": "^4.19.3",
     "typescript": "5.8.2"
   }
 }

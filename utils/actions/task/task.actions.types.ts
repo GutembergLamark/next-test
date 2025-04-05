@@ -1,4 +1,4 @@
-import { $Enums, Task } from "@prisma/client";
+import { $Enums, Label, Task } from "@prisma/client";
 
 export interface TaskActions {
   createTask: (formData: FormData) => Promise<ResponsePrismaTask | null>;
@@ -7,7 +7,8 @@ export interface TaskActions {
     id: number
   ) => Promise<ResponsePrismaTask | null>;
   deleteTask: (id: number) => Promise<ResponsePrismaTask | null>;
-  getAllTasks: () => Promise<Array<Task> | null>;
+  getAllTasks: () => Promise<Array<Task & { label: Label }>>;
+  getTaskById: (id: number) => Promise<Task & { label: Label }>;
 }
 
 export interface BodyTaskCreate {

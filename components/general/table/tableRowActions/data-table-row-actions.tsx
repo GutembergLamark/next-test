@@ -1,6 +1,5 @@
 "use client";
 
-import { Row } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -14,26 +13,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { deleteTask } from "@/utils/actions/task/task.actions";
 import { Task } from "@prisma/client";
-import { TaskDialog } from "../data-dialog-task";
-import { useRouter, useSearchParams } from "next/navigation";
-
-interface DataTableRowActionsProps<TData> {
-  row: Row<TData>;
-}
+import useDataTableRowActionsModel from "./data-table-row-actions-model";
+import { DataTableRowActionsProps } from "./data-table-row-actions-types";
 
 export function DataTableRowActions<TData>({
   row,
 }: DataTableRowActionsProps<TData>) {
-  console.log(row.original);
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const id = parseInt(searchParams.get("id") as string);
-
-  const setQueryIdParam = () => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("id", (row?.original as Task).id.toString());
-    router.replace(`?${params.toString()}`);
-  };
+  const { setOrRemoveQueryIdParam, openModalEdit } =
+    useDataTableRowActionsModel<TData>({ row });
 
   return (
     <>
@@ -48,7 +35,12 @@ export function DataTableRowActions<TData>({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[160px]">
-          <DropdownMenuItem onClick={() => setQueryIdParam()}>
+          <DropdownMenuItem
+            onClick={() => {
+              setOrRemoveQueryIdParam("add");
+              openModalEdit();
+            }}
+          >
             Editar
           </DropdownMenuItem>
           <DropdownMenuSeparator />
@@ -61,7 +53,6 @@ export function DataTableRowActions<TData>({
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      {id && <TaskDialog type="edit" />}
     </>
   );
 }

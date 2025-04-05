@@ -6,7 +6,7 @@ import {
   ResponsePrismaTaskWithLabel,
   TaskActions,
 } from "./task.actions.types";
-import { $Enums, Task } from "@prisma/client";
+import { $Enums, Label, Task } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 class TaskServer implements TaskActions {
@@ -77,11 +77,27 @@ class TaskServer implements TaskActions {
           status:
             $Enums.Status[taskData.status as $Enums.Status] ??
             $Enums.Status.PENDING,
+          priority:
+            $Enums.Priority[taskData.priority as $Enums.Priority] ??
+            $Enums.Priority.LOW,
+          label: {
+            connectOrCreate: {
+              where: {
+                title: (taskData.label as string) ?? "",
+              },
+              create: {
+                title: (taskData.label as string) ?? "",
+                value: (taskData.label as string) ?? "",
+              },
+            },
+          },
         },
         include: {
           label: true,
         },
       })) as ResponsePrismaTaskWithLabel;
+
+      revalidatePath("/");
 
       return data;
     } catch (error) {
@@ -115,30 +131,50 @@ class TaskServer implements TaskActions {
     return null;
   }
 
-  async getAllTasks(): Promise<Array<Task> | null> {
+  async getAllTasks(): Promise<Array<Task & { label: Label }>> {
     try {
       const data = (await prisma?.task?.findMany({
         include: {
           label: true,
         },
-      })) as Array<Task>;
-
-      console.log(data);
+      })) as Array<Task & { label: Label }>;
 
       return data;
     } catch (error) {
       if (error instanceof Error) {
         console.log(error.message);
+        throw new Error(error.message);
       }
-    }
 
-    return null;
+      throw new Error("Failed to get tasks");
+    }
+  }
+
+  async getTaskById(id: number): Promise<Task & { label: Label }> {
+    try {
+      const data = (await prisma?.task?.findUnique({
+        where: {
+          id,
+        },
+        include: {
+          label: true,
+        },
+      })) as Task & { label: Label };
+
+      return data;
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log(error.message);
+        throw new Error(error.message);
+      }
+
+      throw new Error("Failed to get task");
+    }
   }
 }
 
 const taskServer = new TaskServer();
 
-// Exporte as Server Actions individualmente
 export const createTask = async (formData: FormData) => {
   return taskServer.createTask(formData);
 };
@@ -153,4 +189,7 @@ export const deleteTask = async (id: number) => {
 
 export const getAllTasks = async () => {
   return taskServer.getAllTasks();
+};
+export const getTaskById = async (id: number) => {
+  return taskServer.getTaskById(id);
 };

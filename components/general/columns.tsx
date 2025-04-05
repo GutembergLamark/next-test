@@ -8,7 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { priorities, statuses } from "../../assets/data/filters";
 
 import { DataTableColumnHeader } from "./table/data-table-column-header";
-import { DataTableRowActions } from "./table/data-table-row-actions";
+import { DataTableRowActions } from "./table/tableRowActions/data-table-row-actions";
 import { Task } from "@prisma/client";
 
 export const columns: ColumnDef<Task>[] = [
