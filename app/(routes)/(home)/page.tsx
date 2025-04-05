@@ -4,6 +4,7 @@ import { getAllTasks } from "@/utils/actions/task/actions/task.actions";
 
 import HomeContent from "./page.client";
 import Link from "next/link";
+import { Suspense } from "react";
 
 export default async function Home() {
   const data = await getAllTasks();
@@ -22,7 +23,9 @@ export default async function Home() {
             <HomeContent />
           </div>
         </div>
-        <DataTable data={data ?? []} columns={columns} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <DataTable data={data ?? []} columns={columns} />
+        </Suspense>
       </div>
 
       <Link
