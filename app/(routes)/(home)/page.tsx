@@ -1,6 +1,6 @@
 import { columns } from "@/components/general/columns";
-import { DataTable } from "@/components/general/table/data-table";
-import { getAllTasks } from "@/utils/actions/task/task.actions";
+import { DataTable } from "@/components/general/table";
+import { getAllTasks } from "@/utils/actions/task/actions/task.actions";
 
 import HomeContent from "./page.client";
 

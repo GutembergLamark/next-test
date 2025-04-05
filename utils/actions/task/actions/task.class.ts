@@ -1,15 +1,15 @@
-"use server";
-import { prisma } from "@/utils/lib/prisma/db";
 import {
   BodyTaskCreate,
   BodyTaskUpdate,
   ResponsePrismaTaskWithLabel,
   TaskActions,
-} from "./task.actions.types";
+} from "../types/task.actions.types";
 import { $Enums, Label, Task } from "@prisma/client";
 import { revalidatePath } from "next/cache";
+import { IDbClient } from "../../types/actions.type";
 
-class TaskServer implements TaskActions {
+export default class TaskServer implements TaskActions {
+  constructor(private readonly dbClient: IDbClient) {}
   async createTask(formData: FormData): Promise<ResponsePrismaTaskWithLabel> {
     const taskData = Object.fromEntries(formData.entries()) as Record<
       keyof BodyTaskCreate,
@@ -17,7 +17,11 @@ class TaskServer implements TaskActions {
     >;
 
     try {
-      const data = (await prisma?.task?.create({
+      if (!taskData.title) {
+        throw new Error("Title is required");
+      }
+
+      const data = (await this.dbClient?.task?.create({
         data: {
           title: (taskData.title as string) ?? "",
           description: (taskData.description as string) ?? "",
@@ -67,7 +71,7 @@ class TaskServer implements TaskActions {
     >;
 
     try {
-      const data = (await prisma?.task?.update({
+      const data = (await this.dbClient?.task?.update({
         where: {
           id: id,
         },
@@ -110,7 +114,7 @@ class TaskServer implements TaskActions {
   }
   async deleteTask(id: number): Promise<ResponsePrismaTaskWithLabel | null> {
     try {
-      const data = (await prisma?.task?.delete({
+      const data = (await this.dbClient?.task?.delete({
         where: {
           id,
         },
@@ -133,7 +137,7 @@ class TaskServer implements TaskActions {
 
   async getAllTasks(): Promise<Array<Task & { label: Label }>> {
     try {
-      const data = (await prisma?.task?.findMany({
+      const data = (await this.dbClient?.task?.findMany({
         include: {
           label: true,
         },
@@ -152,7 +156,7 @@ class TaskServer implements TaskActions {
 
   async getTaskById(id: number): Promise<Task & { label: Label }> {
     try {
-      const data = (await prisma?.task?.findUnique({
+      const data = (await this.dbClient?.task?.findUnique({
         where: {
           id,
         },
@@ -172,24 +176,3 @@ class TaskServer implements TaskActions {
     }
   }
 }
-
-const taskServer = new TaskServer();
-
-export const createTask = async (formData: FormData) => {
-  return taskServer.createTask(formData);
-};
-
-export const updateTask = async (formData: FormData, id: number) => {
-  return taskServer.updateTask(formData, id);
-};
-
-export const deleteTask = async (id: number) => {
-  return taskServer.deleteTask(id);
-};
-
-export const getAllTasks = async () => {
-  return taskServer.getAllTasks();
-};
-export const getTaskById = async (id: number) => {
-  return taskServer.getTaskById(id);
-};

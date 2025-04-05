@@ -1,6 +1,6 @@
 "use client";
 
-import { TaskDialog } from "@/components/general/dialog-task";
+import { TaskDialog } from "@/components/general/dialogTask";
 import { Button } from "@/components/ui/button";
 import { DialogTrigger } from "@/components/ui/dialog";
 import { taskModalStore } from "@/store/tasks.store";

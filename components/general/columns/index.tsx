@@ -4,12 +4,11 @@ import { ColumnDef } from "@tanstack/react-table";
 
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-
-import { priorities, statuses } from "../../assets/data/filters";
-
-import { DataTableColumnHeader } from "./table/data-table-column-header";
-import { DataTableRowActions } from "./table/tableRowActions/data-table-row-actions";
+import { DataTableRowActions } from "@/components/general/table/tableRowActions/dataTableRowActions";
 import { Task } from "@prisma/client";
+import { Suspense } from "react";
+import { DataTableColumnHeader } from "../table/dataTableColumnHeader/dataTableColumnHeader";
+import { priorities, statuses } from "@/assets/data/filters";
 
 export const columns: ColumnDef<Task>[] = [
   {
@@ -120,6 +119,10 @@ export const columns: ColumnDef<Task>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => <DataTableRowActions row={row} />,
+    cell: ({ row }) => (
+      <Suspense fallback={<div>Loading...</div>}>
+        <DataTableRowActions row={row} />
+      </Suspense>
+    ),
   },
 ];

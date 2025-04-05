@@ -23,8 +23,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { DataTableToolbar } from "./data-table-toolbar";
-import { DataTablePagination } from "./data-table-pagination";
+import { DataTableToolbar } from "./dataTableToolbar/dataTableToolbar";
+import { DataTablePagination } from "./dataTablePagination/dataTablePagination";
 import { useState } from "react";
 
 interface DataTableProps<TData, TValue> {

@@ -2,7 +2,7 @@ import { taskModalStore } from "@/store/tasks.store";
 import { Task } from "@prisma/client";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect } from "react";
-import { DataTableRowActionsProps } from "./data-table-row-actions-types";
+import { DataTableRowActionsProps } from "./dataTableRowActions";
 
 export default function useDataTableRowActionsModel<TData>({
   row,

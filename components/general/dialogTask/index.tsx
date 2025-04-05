@@ -1,8 +1,13 @@
 "use client";
 
-import { ReactNode } from "react";
-import { TaskForm } from "../forms/task-form";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
+import { ReactNode, Suspense } from "react";
+import { TaskForm } from "../../forms/taskForm/taskForm";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "../../ui/dialog";
 import { taskModalStore } from "@/store/tasks.store";
 
 export function TaskDialog({
@@ -28,7 +33,9 @@ export function TaskDialog({
             {type === "create" ? "criar uma nova tarefa" : "editar a tarefa"}
           </DialogTitle>
         </DialogHeader>
-        <TaskForm setDialogClose={setDialogClose} type={type} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <TaskForm setDialogClose={setDialogClose} type={type} />
+        </Suspense>
       </DialogContent>
     </Dialog>
   );

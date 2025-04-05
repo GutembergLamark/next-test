@@ -4,19 +4,19 @@ import {
   createTask,
   getTaskById,
   updateTask,
-} from "@/utils/actions/task/task.actions";
+} from "@/utils/actions/task/actions/task.actions";
 import Form from "next/form";
-import { Input } from "../ui/input";
+import { Input } from "../../ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "../../ui/select";
 import { priorities, statuses } from "@/assets/data/filters";
-import { Button } from "../ui/button";
-import { Textarea } from "../ui/textarea";
+import { Button } from "../../ui/button";
+import { Textarea } from "../../ui/textarea";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Label, Task } from "@prisma/client";

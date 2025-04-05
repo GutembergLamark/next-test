@@ -1,14 +1,12 @@
-import { getAllTasks } from "@/utils/actions/task/task.actions";
+import { getAllTasks } from "@/utils/actions/task/actions/task.actions";
 import PageClient from "./page.client";
 
 export default async function Home() {
   const data = await getAllTasks();
 
-  console.log(data);
-
   return (
-    <>
+    <main>
       <PageClient data={data} />
-    </>
+    </main>
   );
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { MoreHorizontal } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -11,10 +12,10 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { deleteTask } from "@/utils/actions/task/task.actions";
+import { deleteTask } from "@/utils/actions/task/actions/task.actions";
 import { Task } from "@prisma/client";
-import useDataTableRowActionsModel from "./data-table-row-actions-model";
-import { DataTableRowActionsProps } from "./data-table-row-actions-types";
+import useDataTableRowActionsModel from "./dataTableRowActions.model";
+import { DataTableRowActionsProps } from "./dataTableRowActions";
 
 export function DataTableRowActions<TData>({
   row,

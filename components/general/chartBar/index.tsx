@@ -1,39 +1,17 @@
-"use client";
-
-import { priorities } from "@/assets/data/filters";
 import {
-  ChartConfig,
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { formatDataTasksForBarChart } from "@/utils/helpers";
-import { Label, Task } from "@prisma/client";
+
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
+import { useChartBarModel } from "./chartBar.model";
+import { ChartBarProps } from "./chartBar.types";
 
-export default function PageClient({
-  data,
-}: {
-  data: Array<Task & { label: Label }>;
-}) {
-  const chartConfig = {
-    [priorities[0].value?.toLowerCase()]: {
-      label: priorities[0].label,
-      color: "#2563eb",
-    },
-    [priorities[1].value?.toLowerCase()]: {
-      label: priorities[1].label,
-      color: "#60a5fa",
-    },
-    [priorities[2].value?.toLowerCase()]: {
-      label: priorities[2].label,
-      color: "#60a5fe",
-    },
-  } satisfies ChartConfig;
-
-  const chartData = formatDataTasksForBarChart(data);
+export function ChartBar({ data }: ChartBarProps) {
+  const { chartConfig, chartData } = useChartBarModel({ data });
 
   return (
     <ChartContainer config={chartConfig}>
