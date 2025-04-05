@@ -31,7 +31,15 @@ export function TaskDialog({
       : "Editar tarefa";
 
   return (
-    <Dialog open={showModal} onOpenChange={(open) => changeModal(open, type)}>
+    <Dialog
+      open={showModal}
+      onOpenChange={(open) => {
+        if (!open) {
+          changeModal(false, "create");
+        }
+        changeModal(open, type);
+      }}
+    >
       {children}
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
