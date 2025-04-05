@@ -49,6 +49,7 @@ export default class TaskServer implements TaskActions {
       })) as ResponsePrismaTaskWithLabel;
 
       revalidatePath("/");
+      revalidatePath("/analytics");
 
       return data;
     } catch (error) {
@@ -102,6 +103,7 @@ export default class TaskServer implements TaskActions {
       })) as ResponsePrismaTaskWithLabel;
 
       revalidatePath("/");
+      revalidatePath("/analytics");
 
       return data;
     } catch (error) {
@@ -124,6 +126,7 @@ export default class TaskServer implements TaskActions {
       })) as ResponsePrismaTaskWithLabel;
 
       revalidatePath("/");
+      revalidatePath("/analytics");
 
       return data;
     } catch (error) {
