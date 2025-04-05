@@ -12,6 +12,11 @@ jobs:
         with:
           node-version: "lts/hydrogen"
 
+      - name: Run docker compose
+        uses: hoverkraft-tech/compose-action@v2.0.1
+        with:
+          compose-file: "./compose.yaml"
+
       - run: npm ci
 
       - run: npm test

@@ -13,7 +13,6 @@ import {
 import { DataTableToolbar } from "./dataTableToolbar/dataTableToolbar";
 import { DataTablePagination } from "./dataTablePagination/dataTablePagination";
 
-import { Task } from "@prisma/client";
 import { DataTableProps } from "./index.types";
 import { useTableModel } from "./index.model";
 
@@ -21,7 +20,7 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-  const { table, setQueryIdParam, changeModal } = useTableModel<TData, TValue>({
+  const { table } = useTableModel<TData, TValue>({
     columns,
     data,
   });
@@ -56,10 +55,6 @@ export function DataTable<TData, TValue>({
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
-                    onClick={() => {
-                      setQueryIdParam((row.original as Task).id);
-                      changeModal(true, "view");
-                    }}
                   >
                     {row.getVisibleCells().map((cell) => {
                       return (
