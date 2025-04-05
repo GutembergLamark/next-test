@@ -9,10 +9,10 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { DataTableRowActions } from "@/components/general/table/tableRowActions/dataTableRowActions";
 import { Task } from "@prisma/client";
-import { Suspense, useCallback } from "react";
+import { Suspense, useCallback, useEffect } from "react";
 import { DataTableColumnHeader } from "../table/dataTableColumnHeader/dataTableColumnHeader";
 import { priorities, statuses } from "@/assets/data/filters";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { taskModalStore } from "@/store/tasks.store";
 
 export const columns: ColumnDef<Task>[] = [
@@ -34,15 +34,30 @@ export const columns: ColumnDef<Task>[] = [
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const label = (row.original as any)?.label;
 
-      const { changeModal } = taskModalStore();
+      const { changeModal, showModal } = taskModalStore();
       const router = useRouter();
       const searchParams = useSearchParams();
+      const path = usePathname();
 
-      const setQueryIdParam = useCallback((id: number) => {
-        const params = new URLSearchParams(searchParams.toString());
-        params.set("id", id.toString());
-        router.replace(`?${params.toString()}`);
-      }, []);
+      const setOrRemoveQueryIdParam = useCallback(
+        (id: string, type?: string) => {
+          if (type === "remove") {
+            changeModal(false, "create");
+            return router.replace(path);
+          }
+
+          const params = new URLSearchParams(searchParams.toString());
+          params.set("id", (row?.original as Task).id.toString());
+          router.replace(`?${params.toString()}`);
+        },
+        []
+      );
+
+      useEffect(() => {
+        if (!showModal) {
+          setOrRemoveQueryIdParam("remove");
+        }
+      }, [showModal]);
 
       return (
         <div className="flex space-x-2 ">
@@ -51,7 +66,7 @@ export const columns: ColumnDef<Task>[] = [
               variant="outline"
               className="cursor-pointer"
               onClick={() => {
-                setQueryIdParam((row.original as Task).id);
+                setOrRemoveQueryIdParam((row.original as Task).id);
                 changeModal(true, "view");
               }}
             >
@@ -61,7 +76,7 @@ export const columns: ColumnDef<Task>[] = [
           <span
             className="max-w-[500px] truncate font-medium cursor-pointer"
             onClick={() => {
-              setQueryIdParam((row.original as Task).id);
+              setOrRemoveQueryIdParam((row.original as Task).id);
               changeModal(true, "view");
             }}
           >
