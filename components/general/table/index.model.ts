@@ -10,10 +10,8 @@ import {
   useReactTable,
   VisibilityState,
 } from "@tanstack/react-table";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { DataTableProps } from "./index.types";
-import { taskModalStore } from "@/store/tasks.store";
-import { useRouter, useSearchParams } from "next/navigation";
 
 export function useTableModel<TData, TValue>({
   columns,
@@ -46,19 +44,7 @@ export function useTableModel<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
-  const { changeModal } = taskModalStore();
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
-  const setQueryIdParam = useCallback((id: number) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("id", id.toString());
-    router.replace(`?${params.toString()}`);
-  }, []);
-
   return {
     table,
-    changeModal,
-    setQueryIdParam,
   };
 }

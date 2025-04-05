@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 
@@ -8,9 +9,11 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { DataTableRowActions } from "@/components/general/table/tableRowActions/dataTableRowActions";
 import { Task } from "@prisma/client";
-import { Suspense } from "react";
+import { Suspense, useCallback } from "react";
 import { DataTableColumnHeader } from "../table/dataTableColumnHeader/dataTableColumnHeader";
 import { priorities, statuses } from "@/assets/data/filters";
+import { useRouter, useSearchParams } from "next/navigation";
+import { taskModalStore } from "@/store/tasks.store";
 
 export const columns: ColumnDef<Task>[] = [
   {
@@ -31,10 +34,37 @@ export const columns: ColumnDef<Task>[] = [
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const label = (row.original as any)?.label;
 
+      const { changeModal } = taskModalStore();
+      const router = useRouter();
+      const searchParams = useSearchParams();
+
+      const setQueryIdParam = useCallback((id: number) => {
+        const params = new URLSearchParams(searchParams.toString());
+        params.set("id", id.toString());
+        router.replace(`?${params.toString()}`);
+      }, []);
+
       return (
-        <div className="flex space-x-2">
-          {label && <Badge variant="outline">{label?.title}</Badge>}
-          <span className="max-w-[500px] truncate font-medium">
+        <div className="flex space-x-2 ">
+          {label && (
+            <Badge
+              variant="outline"
+              className="cursor-pointer"
+              onClick={() => {
+                setQueryIdParam((row.original as Task).id);
+                changeModal(true, "view");
+              }}
+            >
+              {label?.title}
+            </Badge>
+          )}
+          <span
+            className="max-w-[500px] truncate font-medium cursor-pointer"
+            onClick={() => {
+              setQueryIdParam((row.original as Task).id);
+              changeModal(true, "view");
+            }}
+          >
             {row.getValue("title")}
           </span>
         </div>
