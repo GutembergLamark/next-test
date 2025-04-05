@@ -12,16 +12,19 @@ export default function useDataTableRowActionsModel<TData>({
   const path = usePathname();
   const { changeModal, showModal } = taskModalStore();
 
-  const setOrRemoveQueryIdParam = useCallback((type: string) => {
-    if (type === "remove") {
-      changeModal(false, "create");
-      return router.replace(path);
-    }
+  const setOrRemoveQueryIdParam = useCallback(
+    (type: string) => {
+      if (type === "remove") {
+        changeModal(false, "create");
+        return router.replace(path, { scroll: false });
+      }
 
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("id", (row?.original as Task).id.toString());
-    router.replace(`?${params.toString()}`);
-  }, []);
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("id", (row?.original as Task).id.toString());
+      router.replace(`${path}?${params.toString()}`, { scroll: false });
+    },
+    [searchParams, router, row, path, changeModal]
+  );
 
   const openModalEdit = () => {
     changeModal(true, "update");
