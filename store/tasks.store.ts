@@ -1,11 +1,14 @@
 import { create } from "zustand";
 type State = {
   showModal: boolean;
-  type: "create" | "update";
+  type: "create" | "update" | "view";
 };
 
 type Actions = {
-  changeModal: (trueOrFalse: boolean, type: "create" | "update") => State;
+  changeModal: (
+    trueOrFalse: boolean,
+    type: "create" | "update" | "view"
+  ) => State;
 };
 
 export const taskModalStore = create<State & Actions>((set) => ({

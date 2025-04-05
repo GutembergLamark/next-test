@@ -14,12 +14,10 @@ export default function RootLayout({
   return (
     <html lang="pt-br">
       <body className={`antialiased`}>
-        <div className="container-wrapper">
-          <div className="py-6">
-            <section className="overflow-hidden rounded-[0.5rem] border bg-background shadow container m-[0_auto]">
-              {children}
-            </section>
-          </div>
+        <div className="container-wrapper py-6">
+          <section className="overflow-hidden rounded-[0.5rem] border bg-background shadow container m-[0_auto]">
+            {children}
+          </section>
         </div>
       </body>
     </html>

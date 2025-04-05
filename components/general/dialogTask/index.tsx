@@ -14,7 +14,7 @@ export function TaskDialog({
   type,
   children,
 }: {
-  type: "create" | "update";
+  type: "create" | "update" | "view";
   children: ReactNode;
 }) {
   const { showModal, changeModal } = taskModalStore();
@@ -23,14 +23,20 @@ export function TaskDialog({
     changeModal(false, type);
   };
 
+  const title =
+    type === "create"
+      ? "Criar tarefa"
+      : type === "view"
+      ? "Visualizar tarefa"
+      : "Editar tarefa";
+
   return (
     <Dialog open={showModal} onOpenChange={(open) => changeModal(open, type)}>
       {children}
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>
-            Preencha os campos para{" "}
-            {type === "create" ? "criar uma nova tarefa" : "editar a tarefa"}
+            {type !== "view" && "Preencha os campos para"} {title}
           </DialogTitle>
         </DialogHeader>
         <Suspense fallback={<div>Loading...</div>}>
