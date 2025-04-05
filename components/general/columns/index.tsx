@@ -43,14 +43,14 @@ export const columns: ColumnDef<Task>[] = [
         (id: string, type?: string) => {
           if (type === "remove") {
             changeModal(false, "create");
-            return router.replace(path);
+            return router.replace(path, { scroll: false });
           }
 
           const params = new URLSearchParams(searchParams.toString());
           params.set("id", (row?.original as Task).id.toString());
-          router.replace(`?${params.toString()}`);
+          router.replace(`${path}?${params.toString()}`, { scroll: false });
         },
-        []
+        [searchParams, router, row, path, changeModal]
       );
 
       useEffect(() => {
